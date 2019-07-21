@@ -53,7 +53,6 @@ ArchitecturesAllowed=x64
 #include "fragment_fonts.iss"
 #ifdef DEPCTRL
 #include "fragment_runtimes.iss"
-#endif
 
 [Code]
 #include "fragment_shell_code.iss"
