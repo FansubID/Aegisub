@@ -13,7 +13,10 @@ subdirs := \
 	tests \
 	tools \
 	vendor/luabins \
-	vendor/luajit
+
+ifeq (no, $(SYSTEM_LUAJIT))
+subdirs += vendor/luajit
+endif
 
 subdirs := $(addprefix $(TOP),$(addsuffix /Makefile,$(subdirs)))
 

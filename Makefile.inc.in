@@ -9,6 +9,7 @@ HAVE_OPENAL     = @with_openal@
 HAVE_OSS        = @with_oss@
 HAVE_PORTAUDIO  = @with_portaudio@
 HAVE_UCHARDET   = @with_uchardet@
+SYSTEM_LUAJIT   = @with_system_luajit@
 
 ##############
 # BUILD OUTPUT
