@@ -366,7 +366,7 @@
 		},
 		"Character Limit" : 40,
 		"Default Resolution" : {
-			"Auto" : true,
+			"Auto" : false,
 			"Height" : 720,
 			"Width" : 1280
 		},
@@ -607,7 +607,7 @@
 		"Open Audio" : true,
 		"Overscan Mask" : false,
 		"Provider" : "ffmpegsource",
-		"Script Resolution Mismatch" : 1,
+		"Script Resolution Mismatch" : 0,
 		"Slider" : {
 			"Fast Jump Step" : 10,
 			"Show Keyframes" : true
