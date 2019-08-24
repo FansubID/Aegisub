@@ -60,7 +60,7 @@
 			"OUT" : 350
 		},
 		"Line Boundaries Thickness" : 2,
-		"Link" : true,
+		"Link" : false,
 		"Lock Scroll on Cursor" : false,
 		"Medusa Timing Hotkeys" : false,
 		"Next Line on Commit" : true,
@@ -76,7 +76,7 @@
 		},
 		"Snap" : {
 			"Distance" : 8,
-			"Enable" : true
+			"Enable" : false
 		},
 		"Spectrum" : true,
 		"Start Drag Sensitivity" : 8,
