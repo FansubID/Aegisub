@@ -46,8 +46,8 @@
     <AegisubUseUpdateChecker>true</AegisubUseUpdateChecker>
     <CsriLibraryName>vsfilter.lib</CsriLibraryName>
     <StartupLog>false</StartupLog>
-    <UpdateCheckerServer>updates.aegisub.org</UpdateCheckerServer>
-    <UpdateCheckerURL>/trunk</UpdateCheckerURL>
+    <UpdateCheckerServer>mugen.karaokes.moe</UpdateCheckerServer>
+    <UpdateCheckerURL>/downloads/aegisub-japan7</UpdateCheckerURL>
 
     <VendorRoot>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\vendor))</VendorRoot>
     <BoostPath>$(VendorRoot)\boost</BoostPath>

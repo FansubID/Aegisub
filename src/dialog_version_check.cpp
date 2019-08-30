@@ -71,10 +71,58 @@ namespace {
 std::mutex VersionCheckLock;
 
 struct AegisubUpdateDescription {
-	std::string url;
-	std::string friendly_name;
+	int major;
+	int minor;
+	int patch;
+	std::string extra;
 	std::string description;
 };
+
+AegisubUpdateDescription ParseVersionString(std::string version_string) {
+	std::vector<std::string> maj_min;
+	std::vector<std::string> patch;
+	agi::Split(maj_min, version_string, '.');
+	agi::Split(patch, maj_min[2], '-');
+
+	std::string extra = "";
+	if (patch.size() > 1) {
+		extra = patch[1];
+	}
+
+	return AegisubUpdateDescription{
+		atoi(maj_min[0].c_str()),
+		atoi(maj_min[1].c_str()),
+		atoi(patch[0].c_str()),
+		extra,
+		""
+	};
+}
+
+bool IsNewer(AegisubUpdateDescription update) {
+	AegisubUpdateDescription current = ParseVersionString(GetReleaseVersion());
+
+	if (update.major > current.major)
+		return true;
+	else if (update.major == current.major)
+		if (update.minor > current.minor)
+			return true;
+		else if (update.minor == current.minor)
+			if (update.patch > current.patch)
+				return true;
+			else
+				return update.extra.compare(current.extra) > 0;
+
+	return false;
+}
+
+std::string AegisubVersion(AegisubUpdateDescription update) {
+	std::ostringstream s;
+	s << update.major << "." << update.minor << "." << update.patch;
+	if (!update.extra.empty())
+		s << "-" << update.extra;
+
+	return s.str();
+}
 
 class VersionCheckerResultDialog final : public wxDialog {
 	void OnCloseButton(wxCommandEvent &evt);
@@ -84,12 +132,12 @@ class VersionCheckerResultDialog final : public wxDialog {
 	wxCheckBox *automatic_check_checkbox;
 
 public:
-	VersionCheckerResultDialog(wxString const& main_text, const std::vector<AegisubUpdateDescription> &updates);
+	VersionCheckerResultDialog(wxString const& main_text, const AegisubUpdateDescription update);
 
 	bool ShouldPreventAppExit() const override { return false; }
 };
 
-VersionCheckerResultDialog::VersionCheckerResultDialog(wxString const& main_text, const std::vector<AegisubUpdateDescription> &updates)
+VersionCheckerResultDialog::VersionCheckerResultDialog(wxString const& main_text, const AegisubUpdateDescription update)
 : wxDialog(nullptr, -1, _("Version Checker"))
 {
 	const int controls_width = 500;
@@ -100,10 +148,10 @@ VersionCheckerResultDialog::VersionCheckerResultDialog(wxString const& main_text
 	text->Wrap(controls_width);
 	main_sizer->Add(text, 0, wxBOTTOM|wxEXPAND, 6);
 
-	for (auto const& update : updates) {
-		main_sizer->Add(new wxStaticLine(this), 0, wxEXPAND|wxALL, 6);
+	main_sizer->Add(new wxStaticLine(this), 0, wxEXPAND|wxALL, 6);
 
-		text = new wxStaticText(this, -1, to_wx(update.friendly_name));
+	if (IsNewer(update)) {
+		text = new wxStaticText(this, -1, to_wx("Aegisub-Japan7"));
 		wxFont boldfont = text->GetFont();
 		boldfont.SetWeight(wxFONTWEIGHT_BOLD);
 		text->SetFont(boldfont);
@@ -112,21 +160,25 @@ VersionCheckerResultDialog::VersionCheckerResultDialog(wxString const& main_text
 		wxTextCtrl *descbox = new wxTextCtrl(this, -1, to_wx(update.description), wxDefaultPosition, wxSize(controls_width,60), wxTE_MULTILINE|wxTE_READONLY);
 		main_sizer->Add(descbox, 0, wxEXPAND|wxBOTTOM, 6);
 
-		main_sizer->Add(new wxHyperlinkCtrl(this, -1, to_wx(update.url), to_wx(update.url)), 0, wxALIGN_LEFT|wxBOTTOM, 6);
+		std::ostringstream surl;
+		surl << "https://" << UPDATE_CHECKER_SERVER << UPDATE_CHECKER_BASE_URL << "/Aegisub-Japan7-x64-" << AegisubVersion(update) << ".exe";
+		std::string url = surl.str();
+
+		main_sizer->Add(new wxHyperlinkCtrl(this, -1, to_wx(url), to_wx(url)), 0, wxALIGN_LEFT|wxBOTTOM, 6);
 	}
 
 	automatic_check_checkbox = new wxCheckBox(this, -1, _("&Auto Check for Updates"));
 	automatic_check_checkbox->SetValue(OPT_GET("App/Auto/Check For Updates")->GetBool());
 
 	wxButton *remind_later_button = nullptr;
-	if (updates.size() > 0)
+	if (IsNewer(update))
 		remind_later_button = new wxButton(this, wxID_NO, _("Remind me again in a &week"));
 
 	wxButton *close_button = new wxButton(this, wxID_OK, _("&Close"));
 	SetAffirmativeId(wxID_OK);
 	SetEscapeId(wxID_OK);
 
-	if (updates.size())
+	if (IsNewer(update))
 		main_sizer->Add(new wxStaticLine(this), 0, wxEXPAND|wxALL, 6);
 	main_sizer->Add(automatic_check_checkbox, 0, wxEXPAND|wxBOTTOM, 6);
 
@@ -280,25 +332,19 @@ static wxString GetAegisubLanguage() {
 	return to_wx(OPT_GET("App/Language")->GetString());
 }
 
-void DoCheck(bool interactive) {
+AegisubUpdateDescription GetLatestVersion() {
 	boost::asio::ip::tcp::iostream stream;
 	stream.connect(UPDATE_CHECKER_SERVER, "http");
 	if (!stream)
 		throw VersionCheckError(from_wx(_("Could not connect to updates server.")));
 
 	agi::format(stream,
-		"GET %s?rev=%d&rel=%d&os=%s&lang=%s&aegilang=%s HTTP/1.0\r\n"
-		"User-Agent: Aegisub %s\r\n"
+		"GET %s/latest HTTP/1.1\r\n"
+		"User-Agent: Aegisub-Japan7\r\n"
 		"Host: %s\r\n"
 		"Accept: */*\r\n"
 		"Connection: close\r\n\r\n"
 		, UPDATE_CHECKER_BASE_URL
-		, GetSVNRevision()
-		, (GetIsOfficialRelease() ? 1 : 0)
-		, GetOSShortName()
-		, GetSystemLanguage()
-		, GetAegisubLanguage()
-		, GetAegisubLongVersionString()
 		, UPDATE_CHECKER_SERVER);
 
 	std::string http_version;
@@ -316,36 +362,39 @@ void DoCheck(bool interactive) {
 	for (auto const& header : agi::line_iterator<std::string>(stream))
 		if (header.empty()) break;
 
-	std::vector<AegisubUpdateDescription> results;
+	AegisubUpdateDescription version = AegisubUpdateDescription{0, 0, 0, "", ""};
+	std::ostringstream desc;
 	for (auto const& line : agi::line_iterator<std::string>(stream)) {
-		if (line.empty()) continue;
 
-		std::vector<std::string> parsed;
-		agi::Split(parsed, line, '|');
-		if (parsed.size() != 6) continue;
+		if (version.major == 0 && version.minor == 0 && version.minor == 0) {
+			version = ParseVersionString(line);
+		} else {
+			desc << line << "\n";
+		}
 
-		if (atoi(parsed[1].c_str()) <= GetSVNRevision())
-			continue;
-
-		// 0 and 2 being things that never got used
-		results.push_back(AegisubUpdateDescription{
-			inline_string_decode(parsed[3]),
-			inline_string_decode(parsed[4]),
-			inline_string_decode(parsed[5])
-		});
 	}
 
-	if (!results.empty() || interactive) {
+	if (version.major != 0 && version.minor != 0 && version.patch != 0) {
+		version.description = desc.str();
+		return version;
+	}
+
+	throw VersionCheckError(from_wx(_("Could not get update from updates server.")));
+}
+
+
+void DoCheck(bool interactive) {
+	AegisubUpdateDescription update = GetLatestVersion();
+
+	if (IsNewer(update) || interactive) {
 		agi::dispatch::Main().Async([=]{
 			wxString text;
-			if (results.size() == 1)
+			if (IsNewer(update))
 				text = _("An update to Aegisub was found.");
-			else if (results.size() > 1)
-				text = _("Several possible updates to Aegisub were found.");
 			else
 				text = _("There are no updates to Aegisub.");
 
-			new VersionCheckerResultDialog(text, results);
+			new VersionCheckerResultDialog(text, update);
 		});
 	}
 }

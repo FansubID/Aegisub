@@ -44,10 +44,13 @@ else
   tagged_release=0
 fi
 
+last_release=$(git describe --tags)
+
 
 new_version_h="\
 #define BUILD_GIT_VERSION_NUMBER ${git_revision}
 #define BUILD_GIT_VERSION_STRING \"${git_version_str}\"
+#define RELEASE_VERSION \"${last_release#v}\"
 #define TAGGED_RELEASE ${tagged_release}
 #define INSTALLER_VERSION \"${installer_version}\"
 #define RESOURCE_BASE_VERSION ${resource_version}"

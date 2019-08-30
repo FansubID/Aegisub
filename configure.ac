@@ -523,16 +523,16 @@ AC_MSG_CHECKING([for update checker server])
 AC_ARG_WITH(update-server,
             AS_HELP_STRING([--with-update-server=HOSTNAME],
                            [Server to use for the update checker
-                            [updates.aegisub.org]]))
-AC_MSG_RESULT(${with_update_server:=updates.aegisub.org})
+                            [mugen.karaokes.moe]]))
+AC_MSG_RESULT(${with_update_server:=mugen.karaokes.moe})
 AC_DEFINE_UNQUOTED([UPDATE_CHECKER_SERVER], ["$with_update_server"],
                    [Server for the update checker])
 
 AC_MSG_CHECKING([for update checker base URL])
 AC_ARG_WITH(update-url,
             AS_HELP_STRING([--with-update-url=HOSTNAME],
-                           [Base path to use for the update checker [/trunk]]))
-AC_MSG_RESULT(${with_update_url:=/trunk})
+                           [Base path to use for the update checker [/downloads/aegisub-japan7]]))
+AC_MSG_RESULT(${with_update_url:=/downloads/aegisub-japan7})
 AC_DEFINE_UNQUOTED([UPDATE_CHECKER_BASE_URL], ["$with_update_url"],
                    [Base path for the update checker])
 
