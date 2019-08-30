@@ -76,9 +76,10 @@ after_build:
   - 7z x "C:\aegisub-codecs.zip"
   - cd packages\win_installer
   - iscc aegisub3.iss
+  - cd ..\..
 
 on_success:
-  - bash.exe .ci\upload_win_installer.sh
+  - bash.exe .ci\\upload_win_installer.sh
 
 artifacts:
   - path: packages\win_installer\output\Aegisub-Japan7-x64.exe
