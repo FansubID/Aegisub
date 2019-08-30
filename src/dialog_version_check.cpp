@@ -101,18 +101,16 @@ AegisubUpdateDescription ParseVersionString(std::string version_string) {
 bool IsNewer(AegisubUpdateDescription update) {
 	AegisubUpdateDescription current = ParseVersionString(GetReleaseVersion());
 
-	if (update.major > current.major)
-		return true;
-	else if (update.major == current.major)
-		if (update.minor > current.minor)
-			return true;
-		else if (update.minor == current.minor)
-			if (update.patch > current.patch)
-				return true;
-			else
-				return update.extra.compare(current.extra) > 0;
+	if (update.major != current.major)
+		return update.major > current.major;
 
-	return false;
+	if (update.minor != current.minor)
+		return update.minor > current.minor;
+
+	if (update.patch != current.patch)
+		return update.patch > current.patch;
+
+	return update.extra.compare(current.extra) > 0;
 }
 
 std::string AegisubVersion(AegisubUpdateDescription update) {
