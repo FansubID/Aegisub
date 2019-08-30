@@ -13,6 +13,7 @@ install:
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
+  - sh: build/version.sh
   - MSBuild.exe Aegisub.sln /target:BuildTasks
   - MSBuild.exe Aegisub.sln /m /p:Configuration=Release /p:Platform=x64
 
