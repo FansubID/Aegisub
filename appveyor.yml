@@ -77,5 +77,8 @@ after_build:
   - cd packages\win_installer
   - iscc aegisub3.iss
 
+on_success:
+  - bash.exe .ci\upload_win_installer.sh
+
 artifacts:
   - path: packages\win_installer\output\Aegisub-Japan7-x64.exe
