@@ -123,7 +123,7 @@ namespace BuildTasks {
                 }
             }
 
-            WriteIfChanged(versionHPath,  versionHTemplate, commits, versionStr, taggedRelease ? "1" : "0", installerVersion, resourceVersion);
+            WriteIfChanged(versionHPath,  versionHTemplate, releaseVersion.Shorten(), commits, versionStr, taggedRelease ? "1" : "0", installerVersion, resourceVersion);
             WriteIfChanged(versionXmlPath,  versionXmlTemplate, commits, versionStr);
 
             return true;
