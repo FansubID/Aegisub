@@ -100,7 +100,7 @@ namespace BuildTasks {
                             ExcludeReachableFrom = releaseVersion.Target.Sha
                         };
 
-                        if (repo.Commits.QueryBy(filter).ToList().size() == 0)
+                        if (repo.Commits.QueryBy(filter).ToList().Count == 0)
                             releaseVersion = tag;
                     }
 
