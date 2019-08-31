@@ -38,7 +38,7 @@
       <HintPath>..\..\.nuget\lib\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="LibGit2Sharp">
-      <HintPath>..\..\.nuget\lib\LibGit2Sharp.0.26.1\lib\net35\LibGit2Sharp.dll</HintPath>
+      <HintPath>..\..\.nuget\lib\LibGit2Sharp.0.17.0.0\lib\net35\LibGit2Sharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Engine" />
