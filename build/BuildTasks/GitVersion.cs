@@ -85,7 +85,7 @@ namespace BuildTasks {
             string installerVersion = "0.0.0";
             string resourceVersion = "0, 0, 0";
             string versionStr = null;
-            var releaseVersion = null;
+            Tag releaseVersion;
             bool taggedRelease = false;
             using (var repo = new Repository(Root + ".git")) {
                 commits += repo.Commits.TakeWhile(c => !c.Id.Equals(LastSVNCommit)).Count();
