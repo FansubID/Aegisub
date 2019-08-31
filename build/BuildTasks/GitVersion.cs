@@ -94,7 +94,7 @@ namespace BuildTasks {
                     if (releaseVersion == null) {
                         releaseVersion = tag;
                     } else {
-                        var filter = = new CommitFilter()
+                        var filter = new CommitFilter()
                         {
                             IncludeReachableFrom = tag.Target.Sha,
                             ExcludeReachableFrom = releaseVersion.Target.Sha
