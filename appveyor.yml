@@ -13,7 +13,7 @@ install:
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
-  - sh: build/version.sh
+  - bash.exe "build\version.sh"
   - MSBuild.exe Aegisub.sln /target:BuildTasks
   - MSBuild.exe Aegisub.sln /m /p:Configuration=Release /p:Platform=x64
 
@@ -80,7 +80,7 @@ after_build:
   - cd ..\..
 
 on_success:
-  - sh: bash .ci/upload_win_installer.sh
+  - bash.exe ".ci\upload_win_installer.sh"
 
 artifacts:
   - path: packages\win_installer\output\Aegisub-Japan7-x64.exe
