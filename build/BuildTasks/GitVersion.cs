@@ -85,7 +85,7 @@ namespace BuildTasks {
             string installerVersion = "0.0.0";
             string resourceVersion = "0, 0, 0";
             string versionStr = null;
-            var releaseVersion = null;
+            Tag releaseVersion = null;
             bool taggedRelease = false;
             using (var repo = new Repository(Root + ".git")) {
                 commits += repo.Commits.TakeWhile(c => !c.Id.Equals(LastSVNCommit)).Count();
@@ -96,11 +96,11 @@ namespace BuildTasks {
                     } else {
                         var filter = new CommitFilter()
                         {
-                            IncludeReachableFrom = tag.Target.Sha,
-                            ExcludeReachableFrom = releaseVersion.Target.Sha
+                            Since = tag.Target.Sha,
+                            Until = releaseVersion.Target.Sha
                         };
 
-                        if (repo.Commits.QueryBy(filter).ToList().Count == 0)
+                        if (repo.Commits.QueryBy(filter).ToList().Count > 0)
                             releaseVersion = tag;
                     }
 
@@ -123,7 +123,7 @@ namespace BuildTasks {
                 }
             }
 
-            WriteIfChanged(versionHPath,  versionHTemplate, releaseVersion.Shorten(), commits, versionStr, taggedRelease ? "1" : "0", installerVersion, resourceVersion);
+            WriteIfChanged(versionHPath,  versionHTemplate, commits, versionStr, releaseVersion.Name.TrimStart('v'), taggedRelease ? "1" : "0", installerVersion, resourceVersion);
             WriteIfChanged(versionXmlPath,  versionXmlTemplate, commits, versionStr);
 
             return true;
