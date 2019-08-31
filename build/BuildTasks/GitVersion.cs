@@ -28,9 +28,10 @@ namespace BuildTasks {
         private const string versionHTemplate =
 @"#define BUILD_GIT_VERSION_NUMBER {0}
 #define BUILD_GIT_VERSION_STRING ""{1}""
-#define TAGGED_RELEASE {2}
-#define INSTALLER_VERSION ""{3}""
-#define RESOURCE_BASE_VERSION {4}
+#define RELEASE_VERSION ""{2}""
+#define TAGGED_RELEASE {3}
+#define INSTALLER_VERSION ""{4}""
+#define RESOURCE_BASE_VERSION {5}
 ";
         private const string versionXmlTemplate =
 @"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -84,11 +85,25 @@ namespace BuildTasks {
             string installerVersion = "0.0.0";
             string resourceVersion = "0, 0, 0";
             string versionStr = null;
+            var releaseVersion = null;
             bool taggedRelease = false;
             using (var repo = new Repository(Root + ".git")) {
                 commits += repo.Commits.TakeWhile(c => !c.Id.Equals(LastSVNCommit)).Count();
 
                 foreach (var tag in repo.Tags) {
+                    if (releaseVersion == null) {
+                        releaseVersion = tag;
+                    } else {
+                        var filter = = new CommitFilter()
+                        {
+                            IncludeReachableFrom = tag.Target.Sha,
+                            ExcludeReachableFrom = releaseVersion.Target.Sha
+                        };
+
+                        if (repo.Commits.QueryBy(filter).ToList().size() == 0)
+                            releaseVersion = tag;
+                    }
+
                     if (!tag.Target.Id.Equals(repo.Head.Tip.Id)) continue;
 
                     taggedRelease = true;
