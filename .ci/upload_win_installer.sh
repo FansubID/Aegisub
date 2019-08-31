@@ -1,6 +1,4 @@
 #!/bin/bash
-FTP_USER="$1"
-FTP_PASS="$2"
 
 dest="ftp://shelter.mahoro-net.org/aegisub-japan7"
 tag=$(git describe --exact-match)

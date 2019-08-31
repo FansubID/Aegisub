@@ -1,5 +1,13 @@
 image: Visual Studio 2017
 
+environment:
+  FTP_USER:
+    secure: xGGTbpTyolt9LzlibZG35w==
+
+  FTP_PASS:
+    secure: kPsYsaMBJdlI+vsnrfBp7thNkr9EjDML9dPLxQ0Jjxs=
+
+
 install:
   - cd %APPVEYOR_BUILD_FOLDER%
   - git submodule update --init --recursive
@@ -79,7 +87,7 @@ after_build:
   - cd ..\..
 
 on_success:
-  - IF DEFINED APPVEYOR_REPO_TAG_NAME bash.exe ".ci\upload_win_installer.sh" %FTP_USER% %FTP_PASS%
+  - IF DEFINED APPVEYOR_REPO_TAG_NAME bash.exe ".ci\upload_win_installer.sh"
 
 artifacts:
   - path: packages\win_installer\output\Aegisub-Japan7-x64.exe
