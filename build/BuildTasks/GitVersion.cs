@@ -96,8 +96,8 @@ namespace BuildTasks {
                     } else {
                         var filter = new CommitFilter()
                         {
-                            IncludeReachableFrom = tag.Target.Sha,
-                            ExcludeReachableFrom = releaseVersion.Target.Sha
+                            Since = tag.Target.Sha,
+                            Until = releaseVersion.Target.Sha
                         };
 
                         if (repo.Commits.QueryBy(filter).ToList().Count == 0)
