@@ -79,7 +79,7 @@ after_build:
   - cd ..\..
 
 on_success:
-  - sh: '[ -n "$APPVEYOR_REPO_TAG_NAME" ] && .ci/upload_win_installer.sh'
+  - IF DEFINED APPVEYOR_REPO_TAG_NAME bash.exe ".ci\upload_win_installer.sh" %FTP_USER% %FTP_PASS%
 
 artifacts:
   - path: packages\win_installer\output\Aegisub-Japan7-x64.exe
