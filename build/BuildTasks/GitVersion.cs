@@ -85,7 +85,7 @@ namespace BuildTasks {
             string installerVersion = "0.0.0";
             string resourceVersion = "0, 0, 0";
             string versionStr = null;
-            Tag releaseVersion;
+            Tag releaseVersion = null;
             bool taggedRelease = false;
             using (var repo = new Repository(Root + ".git")) {
                 commits += repo.Commits.TakeWhile(c => !c.Id.Equals(LastSVNCommit)).Count();
@@ -123,7 +123,7 @@ namespace BuildTasks {
                 }
             }
 
-            WriteIfChanged(versionHPath,  versionHTemplate, releaseVersion.Shorten(), commits, versionStr, taggedRelease ? "1" : "0", installerVersion, resourceVersion);
+            WriteIfChanged(versionHPath,  versionHTemplate, releaseVersion.Name, commits, versionStr, taggedRelease ? "1" : "0", installerVersion, resourceVersion);
             WriteIfChanged(versionXmlPath,  versionXmlTemplate, commits, versionStr);
 
             return true;
