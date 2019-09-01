@@ -159,7 +159,7 @@ VersionCheckerResultDialog::VersionCheckerResultDialog(wxString const& main_text
 		main_sizer->Add(descbox, 0, wxEXPAND|wxBOTTOM, 6);
 
 		std::ostringstream surl;
-		surl << "https://" << UPDATE_CHECKER_SERVER << UPDATE_CHECKER_BASE_URL << "/Aegisub-Japan7-x64-" << AegisubVersion(update) << ".exe";
+		surl << "http://" << UPDATE_CHECKER_SERVER << UPDATE_CHECKER_BASE_URL << "/Aegisub-Japan7-x64-" << AegisubVersion(update) << ".exe";
 		std::string url = surl.str();
 
 		main_sizer->Add(new wxHyperlinkCtrl(this, -1, to_wx(url), to_wx(url)), 0, wxALIGN_LEFT|wxBOTTOM, 6);
