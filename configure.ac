@@ -231,6 +231,9 @@ AC_DEFINE(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION, 1,
 PKG_CHECK_MODULES(ICU_UC, icu-uc >= icu_required_version)
 PKG_CHECK_MODULES(ICU_I18N, icu-i18n >= icu_required_version)
 
+AC_CHECK_LIB([ssl], [SSL_library_init], [], [AC_MSG_FAILURE([could not find ssl])])
+AC_CHECK_LIB([crypto], [BIO_read], [], [AC_MSG_FAILURE([could not find crypto])])
+
 ########
 ## boost
 ########
