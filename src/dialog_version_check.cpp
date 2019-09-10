@@ -386,9 +386,7 @@ AegisubUpdateDescription GetLatestVersion() {
             throw boost::system::system_error{ec};
 
 	std::string line;
-	std::ostringstream sbody;
-	sbody << res.body().data();
-	std::stringstream body(sbody.str());
+	std::stringstream body(res.body().data());
 
 	std::getline(body, line, '\n');
 
