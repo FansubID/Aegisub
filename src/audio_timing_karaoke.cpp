@@ -149,6 +149,8 @@ public:
 	std::vector<AudioMarker*> OnLeftClick(int ms, bool, bool, int sensitivity, int) override;
 	std::vector<AudioMarker*> OnRightClick(int ms, bool ctrl_down, int, int) override;
 	void OnMarkerDrag(std::vector<AudioMarker*> const& marker, int new_position, int) override;
+	std::string GetCurrentSylText() const override;
+	void SetCurrentSylText(std::string new_text) override;
 
 	AudioTimingControllerKaraoke(agi::Context *c, AssKaraoke *kara, agi::signal::Connection& file_changed);
 };
@@ -578,4 +580,13 @@ void AudioTimingControllerKaraoke::GetLabels(TimeRange const& range, std::vector
 	copy(labels | boost::adaptors::filtered([&](AudioLabel const& l) {
 		return range.overlaps(l.range);
 	}), back_inserter(out));
+}
+
+std::string AudioTimingControllerKaraoke::GetCurrentSylText() const {
+	return kara->GetStrippedText(cur_syl);
+}
+
+void AudioTimingControllerKaraoke::SetCurrentSylText(std::string new_text) {
+	kara->SetStrippedText(cur_syl, new_text);
+	AnnounceChanges(true);
 }
