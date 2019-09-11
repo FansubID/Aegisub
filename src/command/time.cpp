@@ -465,6 +465,20 @@ struct time_opt_tap_to_time final : public Command {
 	}
 };
 
+struct time_add_space final : public Command {
+	CMD_NAME("time/add_space")
+	STR_MENU("Add Space")
+	STR_DISP("Add Space")
+	STR_HELP("Add a space at the end of the current syllab")
+	void operator()(agi::Context *c) override {
+		if (c->audioController->GetTimingController()) {
+			AudioTimingController *tc = c->audioController->GetTimingController();
+			tc->SetCurrentSylText(tc->GetCurrentSylText() + " ");
+			// tc->Next(AudioTimingController::TIMING_UNIT);
+		}
+	}
+};
+
 }
 
 namespace cmd {
@@ -490,5 +504,6 @@ namespace cmd {
 		reg(agi::make_unique<time_snap_start_video>());
 		reg(agi::make_unique<time_start_decrease>());
 		reg(agi::make_unique<time_start_increase>());
+		reg(agi::make_unique<time_add_space>());
 	}
 }

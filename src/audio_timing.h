@@ -165,6 +165,12 @@ public:
 	/// controlling the mouse cursor.
 	virtual bool IsNearbyMarker(int ms, int sensitivity, bool alt_down) const = 0;
 
+	/// @brief Return the text of the currently selected syllab
+	virtual std::string GetCurrentSylText() const { return ""; }
+
+	/// @ brief Set the text for the currently selected syllab
+	virtual void SetCurrentSylText(std::string new_text) {}
+
 	/// @brief The user pressed the left mouse button on the audio
 	/// @param ms          The time in milliseconds the user clicked
 	/// @param ctrl_down   Is the user currently holding the ctrl key down?

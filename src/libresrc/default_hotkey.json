@@ -110,6 +110,9 @@
 		"time/prev" : [
 			"A",
 			"Left"
+		],
+		"time/add_space" : [
+			"Ctrl-Space"
 		]
 	},
 	"Default" : {
@@ -226,7 +229,7 @@
 			"Ctrl-3"
 		],
 		"video/focus_seek" : [
-			"Ctrl-Space"
+			"Alt-Space"
 		],
 		"video/frame/next" : [
 			"Ctrl-KP_6"
