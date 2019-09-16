@@ -3,6 +3,7 @@ image: Visual Studio 2017
 install:
   - cd %APPVEYOR_BUILD_FOLDER%
   - git submodule update --init --recursive
+  - curl -O https://mugen.karaokes.moe/downloads/aegisub-japan7/openssl-aegisub.zip
   - set PATH=C:\gettext\bin;"C:\Program Files (x86)\Inno Setup 5";C:\yasm;%PATH%
   - mkdir C:\yasm
   - curl -o "C:\yasm\yasm.exe" http://www.tortall.net/projects/yasm/releases/yasm-1.3.0-win64.exe
@@ -10,12 +11,11 @@ install:
   - curl -L -o "C:\gettext.zip" https://github.com/vslavik/gettext-tools-windows/releases/download/v0.20.1/gettext-tools-windows-0.20.1.zip
   - cd C:\gettext
   - 7z x C:\gettext.zip
-  - curl -O https://mugen.karaokes.moe/downloads/aegisub-japan7/openssl-aegisub.zip
-  - 7z x openssl-aegisub.zip
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
   - MSBuild.exe Aegisub.sln /target:BuildTasks
+  - 7z x openssl-aegisub.zip
   - MSBuild.exe Aegisub.sln /m /p:Configuration=Release /p:Platform=x64
 
 after_build:
