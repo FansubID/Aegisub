@@ -46,7 +46,13 @@
 #include <libaegisub/split.h>
 
 #include <ctime>
+#include <boost/beast/core.hpp>
+#include <boost/beast/http.hpp>
+#include <boost/beast/version.hpp>
+#include <boost/asio/connect.hpp>
 #include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/ssl/error.hpp>
+#include <boost/asio/ssl/stream.hpp>
 #include <functional>
 #include <mutex>
 #include <vector>
@@ -67,8 +73,12 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+
 namespace {
 std::mutex VersionCheckLock;
+
+namespace ssl = boost::asio::ssl;
+namespace http = boost::beast::http;
 
 struct AegisubUpdateDescription {
 	int major;
@@ -159,7 +169,7 @@ VersionCheckerResultDialog::VersionCheckerResultDialog(wxString const& main_text
 		main_sizer->Add(descbox, 0, wxEXPAND|wxBOTTOM, 6);
 
 		std::ostringstream surl;
-		surl << "http://" << UPDATE_CHECKER_SERVER << UPDATE_CHECKER_BASE_URL << "/Aegisub-Japan7-" << AegisubVersion(update) << "-x64.exe";
+		surl << "https://" << UPDATE_CHECKER_SERVER << UPDATE_CHECKER_BASE_URL << "/Aegisub-Japan7-" << AegisubVersion(update) << "-x64.exe";
 		std::string url = surl.str();
 
 		main_sizer->Add(new wxHyperlinkCtrl(this, -1, to_wx(url), to_wx(url)), 0, wxALIGN_LEFT|wxBOTTOM, 6);
@@ -331,51 +341,64 @@ static wxString GetAegisubLanguage() {
 }
 
 AegisubUpdateDescription GetLatestVersion() {
-	boost::asio::ip::tcp::iostream stream;
-	stream.connect(UPDATE_CHECKER_SERVER, "http");
-	if (!stream)
-		throw VersionCheckError(from_wx(_("Could not connect to updates server.")));
 
-	agi::format(stream,
-		"GET %s/latest HTTP/1.1\r\n"
-		"User-Agent: Aegisub-Japan7\r\n"
-		"Host: %s\r\n"
-		"Accept: */*\r\n"
-		"Connection: close\r\n\r\n"
-		, UPDATE_CHECKER_BASE_URL
-		, UPDATE_CHECKER_SERVER);
+	boost::asio::io_context ioc;
+	boost::asio::ssl::context ctx(ssl::context::method::sslv23_client);
 
-	std::string http_version;
-	stream >> http_version;
-	int status_code;
-	stream >> status_code;
-	if (!stream || http_version.substr(0, 5) != "HTTP/")
-		throw VersionCheckError(from_wx(_("Could not download from updates server.")));
-	if (status_code != 200)
-		throw VersionCheckError(agi::format(_("HTTP request failed, got HTTP response %d."), status_code));
+	boost::asio::ip::tcp::resolver resolver(ioc);
+	ssl::stream<boost::asio::ip::tcp::socket> stream(ioc, ctx);
 
-	stream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	if(! SSL_set_tlsext_host_name(stream.native_handle(), UPDATE_CHECKER_SERVER)) {
+            boost::system::error_code ec{static_cast<int>(::ERR_get_error()), boost::asio::error::get_ssl_category()};
+            throw boost::system::system_error{ec};
+        }
 
-	// Skip the headers since we don't care about them
-	for (auto const& header : agi::line_iterator<std::string>(stream))
-		if (header.empty()) break;
+	auto const results = resolver.resolve(UPDATE_CHECKER_SERVER, "443");
 
-	AegisubUpdateDescription version = AegisubUpdateDescription{0, 0, 0, "", ""};
+	boost::asio::connect(stream.next_layer(), results.begin(), results.end());
+	stream.handshake(boost::asio::ssl::stream_base::handshake_type::client);
+
+	std::ostringstream s;
+	s << UPDATE_CHECKER_BASE_URL;
+	s << "/latest";
+	std::string target = s.str();
+	http::request<http::string_body> req(http::verb::get, target, 11);
+	req.set(http::field::host, UPDATE_CHECKER_SERVER);
+	req.set(http::field::user_agent, "Aegisub-Japan7");
+
+	http::write(stream, req);
+
+	boost::beast::flat_buffer buffer;
+
+	http::response<http::string_body> res;
+
+	http::read(stream, buffer, res);
+
+	// Gracefully close the stream
+        boost::system::error_code ec;
+        stream.shutdown(ec);
+        if(ec == boost::asio::error::eof)
+        {
+            // http://stackoverflow.com/questions/25587403/boost-asio-ssl-async-shutdown-always-finishes-with-an-error
+            ec.assign(0, ec.category());
+        }
+        if(ec)
+            throw boost::system::system_error{ec};
+
+	std::string line;
+	std::stringstream body(res.body().data());
+
+	std::getline(body, line, '\n');
+
+	AegisubUpdateDescription version = ParseVersionString(line);
+
 	std::ostringstream desc;
-	for (auto const& line : agi::line_iterator<std::string>(stream)) {
-
-		if (version.major == 0 && version.minor == 0 && version.minor == 0) {
-			version = ParseVersionString(line);
-		} else {
-			desc << line << "\n";
-		}
-
+	while (std::getline(body, line, '\n')) {
+		desc << line;
 	}
 
-	if (version.major != 0 && version.minor != 0 && version.patch != 0) {
-		version.description = desc.str();
-		return version;
-	}
+	version.description = desc.str();
+	return version;
 
 	throw VersionCheckError(from_wx(_("Could not get update from updates server.")));
 }
