@@ -10,6 +10,8 @@ install:
   - curl -L -o "C:\gettext.zip" https://github.com/vslavik/gettext-tools-windows/releases/download/v0.20.1/gettext-tools-windows-0.20.1.zip
   - cd C:\gettext
   - 7z x C:\gettext.zip
+  - curl -O https://mugen.karaokes.moe/downloads/aegisub-japan7/openssl-aegisub.zip
+  - 7z x openssl-aegisub.zip
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
