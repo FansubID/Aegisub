@@ -55,6 +55,8 @@ Name: "checkforupdates"; Description: "{cm:CheckForUpdates}"; GroupDescription: 
 ; main
 DestDir: {app}; Source: ..\..\bin\aegisub{#ARCH}.exe; Flags: ignoreversion; Components: main
 DestDir: {app}; Source: license.txt; Flags: ignoreversion; Components: main
+DestDir: {app}; Source: ..\..\bin\libcrypto-1_1-x64.dll; Flags: ignoreversion; Components: main
+DestDir: {app}; Source: ..\..\bin\libssl-1_1-x64.dll; Flags: ignoreversion; Components: main
 
 [Icons]
 Name: {commonprograms}\Aegisub; Filename: {app}\aegisub{#ARCH}.exe; WorkingDir: {app}; IconIndex: 0; Tasks: startmenuicon; Comment: Create and edit subtitle files
