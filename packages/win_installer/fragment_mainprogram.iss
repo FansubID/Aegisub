@@ -46,6 +46,7 @@ Name: "macros\modules\luajson"; Description: "LuaJSON"; Types: full
 Name: "dictionaries"; Description: "Spellcheck Dictionaries"; Types: full
 Name: "dictionaries\en_US"; Description: "English (US)"; Types: full
 Name: "translations"; Description: "Aegisub Translations"; Types: full
+Name: "fonts"; Description: "Bundled fonts"; Types: full
 
 [Tasks]
 Name: "startmenuicon"; Description: "{cm:StartMenuIcon}"; GroupDescription: "{cm:AdditionalIcons}"

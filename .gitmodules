@@ -40,3 +40,6 @@
 	path = vendor/uchardet
 	url = https://gitlab.freedesktop.org/uchardet/uchardet.git
 	ignore = dirty
+[submodule "vendor/japan7-fonts"]
+	path = vendor/japan7-fonts
+	url = https://github.com/odrling/japan7-fonts.git
