@@ -2,7 +2,7 @@
 
 ## Installation
 
-The latest Windows build can be downloaded at https://mugen.karaokes.moe/downloads/aegisub-japan7/Aegisub-Japan7-latest-x64.exe
+The latest Windows build can be downloaded at https://mugen.karaokes.moe/downloads/aegisub-japan7/Aegisub-Japan7-latest-x64
 
 A package is available on the AUR for Arch Linux users: [aegisub-japan7](https://aur.archlinux.org/packages/aegisub-japan7/)
 
