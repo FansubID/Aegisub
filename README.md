@@ -1,18 +1,22 @@
-# Aegisub
+# Aegisub-Japan7
 
-For binaries and general information [see the homepage](http://www.aegisub.org).
+## Installation
 
-The bug tracker can be found at http://devel.aegisub.org.
+The latest Windows build can be downloaded at https://mugen.karaokes.moe/downloads/aegisub-japan7/Aegisub-Japan7-latest-x64.exe
 
-Support is available on [the forums](http://forum.aegisub.org) or [on IRC](irc://irc.rizon.net/aegisub).
+A package is available on the AUR for Arch Linux users: [aegisub-japan7](https://aur.archlinux.org/packages/aegisub-japan7/)
 
-## Building Aegisub
+An ebuild is available for Gentoo users at https://git.odrling.xyz/odrling/odrling-overlay/src/branch/master/media-video/aegisub/aegisub-9999.ebuild
+
+The default style uses the [Amaranth font](https://github.com/googlefonts/amaranth), which is installed by default when installing from the sources above.
+
+## Building Aegisub-Japan7
 
 ### Windows
 
 Prerequisites:
 
-1. Visual Studio 2015 (the free Community edition is good enough)
+1. Visual Studio 2017 (the free Community edition is good enough)
 2. The June 2010 DirectX SDK (the final release before DirectSound was dropped)
 3. [Yasm](http://yasm.tortall.net/) installed to somewhere on your path.
 
@@ -80,6 +84,42 @@ wxWidgets is located in vendor/wxWidgets, and can be built like so:
 
 Once the dependencies are installed, build Aegisub with `autoreconf && ./configure --with-wxdir=/path/to/Aegisub/vendor/wxWidgets && make && make osx-bundle`.
 `autoreconf` should be skipped if you are building from a source tarball rather than `git`.
+
+### Linux, BSD or Toasters
+
+Install all the dependencies with the package manager of your distribution:
+
+	wxGTK
+	boost
+	icu
+	ffmpegsource
+	fontconfig
+	freetype
+	libass
+	zlib
+	libiconv
+	opengl
+	openal
+	openssl or libressl
+
+Optional dependencies:
+
+	alsa-lib
+	fftw
+	openal
+	portaudio
+	pulseaudio
+	hunspell
+	luajit (can be bundled with your build)
+
+
+Once all the dependencies are installed, run:
+
+```bash
+./autogen.sh
+./configure
+make -j$(nproc)
+```
 
 ## Updating Moonscript
 
