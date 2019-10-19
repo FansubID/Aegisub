@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: aegisub-japan7
-Source: <url://example.com>
+Source: <https://github.com/odrling/Aegisub>
 #
 # Please double check copyright with the licensecheck(1) command.
 
