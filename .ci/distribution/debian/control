@@ -2,7 +2,7 @@ Source: aegisub-japan7
 Section: video
 Priority: optional
 Maintainer: odrling <florianbadie@odrling.xyz>
-Build-Depends: debhelper (>=11~), dh-autoreconf, intltool, libasound2-dev [linux-any], libass-dev, libboost-dev, libboost-chrono-dev, libboost-filesystem-dev, libboost-locale-dev, libboost-regex-dev, libboost-system-dev, libboost-thread-dev, libffms2-dev (>= 2.19), libfftw3-dev, libfontconfig1-dev, libfreetype6-dev, libgl1-mesa-dev | libgl-dev, libglu1-mesa-dev | libglu-dev, libhunspell-dev, libicu-dev, libpulse-dev, libwxgtk3.0-dev, libssl-dev
+Build-Depends: debhelper, dh-autoreconf, intltool, libasound2-dev [linux-any], libass-dev, libboost-dev, libboost-chrono-dev, libboost-filesystem-dev, libboost-locale-dev, libboost-regex-dev, libboost-system-dev, libboost-thread-dev, libffms2-dev (>= 2.19), libfftw3-dev, libfontconfig1-dev, libfreetype6-dev, libgl1-mesa-dev | libgl-dev, libglu1-mesa-dev | libglu-dev, libhunspell-dev, libicu-dev, libpulse-dev, libwxgtk3.0-dev, libssl-dev
 Standards-Version: 4.1.4
 Homepage: https://github.com/odrling/Aegisub
 
