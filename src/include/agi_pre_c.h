@@ -27,66 +27,9 @@
 //
 // Aegisub Project http://www.aegisub.org/
 
-/// @file agi_pre.h
-/// @brief Precompiled headers include file, including all headers that should be precompiled
-/// @ingroup main
-///
-/// In order to use it, set the project to use this header as precompiled and
-/// insert it in every source file (under C/C++ -> Advanced -> Force Includes),
-/// then set stdwx.cpp to generate the precompiled header
-///
-/// @note Make sure that you disable use of precompiled headers on md5.c and
-///       MatroskaParser.c, as well as any possible future .c files.
-
-#ifdef __cplusplus
-
-// Block msvc from complaining about not using msvc-specific versions for
-// insecure C functions.
-#ifdef _CRT_SECURE_NO_WARNINGS
-#define _CRT_SECURE_NO_WARNINGS_DEFINED
-#else
-#define _CRT_SECURE_NO_WARNINGS
-#endif
-
 #include "../../acconf.h"
 
 #define WIN32_LEAN_AND_MEAN
-
-// Common C
-#include <cassert>
-#include <cerrno>
-#include <cfloat>
-#include <climits>
-#include <cmath>
-#include <cstdint>
-#include <ctime>
-
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4996)
-#endif
-
-// Common C++
-#include <algorithm>
-#include <array>
-#include <functional>
-#include <iterator>
-#include <limits>
-#include <list>
-#include <map>
-#include <memory>
-#include <set>
-#include <string>
-#include <type_traits>
-#include <type_traits>
-#include <typeinfo>
-#include <unordered_map>
-#include <utility>
-#include <vector>
-
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif
 
 #ifdef _WIN32
 #include <objbase.h>
@@ -94,21 +37,6 @@
 #else
 #include <sys/param.h>
 #endif
-
-// Boost
-#include <boost/container/list.hpp>
-#include <boost/flyweight.hpp>
-#include <boost/io/ios_state.hpp>
-#include <boost/range/adaptor/filtered.hpp>
-#include <boost/range/adaptor/transformed.hpp>
-#include <boost/range/algorithm.hpp>
-#include <boost/range/irange.hpp>
-#include <boost/regex.hpp>
-#define BOOST_NO_SCOPED_ENUMS
-#include <boost/filesystem/path.hpp>
-#undef BOOST_NO_SCOPED_ENUMS
-#include <boost/interprocess/streams/bufferstream.hpp>
-#include <boost/interprocess/streams/vectorstream.hpp>
 
 // wxWidgets headers
 #include <wx/defs.h> // Leave this first.
@@ -208,8 +136,3 @@
 #include <GL/gl.h>
 #endif
 
-#ifndef _CRT_SECURE_NO_WARNINGS_DEFINED
-#undef _CRT_SECURE_NO_WARNINGS
-#endif
-
-#endif
