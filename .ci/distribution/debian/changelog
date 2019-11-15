@@ -1,6 +1,6 @@
-aegisub-japan7 (3.3.2); urgency=low
+aegisub-japan7 (3.3.2) unstable; urgency=low
 
-  * Initial release. Closes: #nnnn
-    <nnnn is the bug number of your ITP>
+  * Initial release.
 
- -- root <>  Thu, 17 Oct 2019 08:35:38 +0000
+ -- odrling <florianbadie@odrling.xyz>  Thu, 17 Oct 2019 08:35:38 +0000
+
