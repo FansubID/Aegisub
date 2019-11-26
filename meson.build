@@ -225,6 +225,9 @@ endif
 
 deps += dep_gl
 
+ssl = dependency('openssl')
+deps += ssl
+
 # TODO: csri
 
 acconf = configure_file(output: 'acconf.h', configuration: conf)
