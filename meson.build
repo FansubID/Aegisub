@@ -3,7 +3,7 @@ project('Aegisub', ['c', 'cpp'],
         meson_version: '>=0.50.0',
         # c_std=c11 should be here but it breaks Linux builds for some reason, needs investigation
         default_options: ['cpp_std=c++11', 'b_lto=true'],
-        version: '3.2.2')
+        version: '3.3.2-2')
 
 if host_machine.system() == 'windows'
     version_sh = find_program('tools/version.ps1')
@@ -42,6 +42,8 @@ if get_option('credit') != ''
     conf.set_quoted('BUILD_CREDIT', get_option('credit'))
 endif
 conf.set('WITH_UPDATE_CHECKER', get_option('enable_update_checker'))
+conf.set_quoted('UPDATE_CHECKER_SERVER', get_option('update_server'))
+conf.set_quoted('UPDATE_CHECKER_BASE_URL', get_option('update_url'))
 
 deps = []
 deps_inc = []
@@ -69,9 +71,18 @@ deps += iconv_dep
 
 deps += dependency('libass', version: '>=0.9.7',
                    fallback: ['libass', 'libass_dep'])
-deps += dependency('boost', version: '>=1.50.0',
-                   modules: ['chrono', 'filesystem', 'locale', 'regex',
-                             'system', 'thread'])
+
+if get_option('enable_update_checker')
+    deps += dependency('boost', version: '>=1.66.0',
+                       modules: ['chrono', 'filesystem', 'locale', 'regex',
+                                 'system', 'thread'])
+    deps += dependency('openssl')
+else
+    deps += dependency('boost', version: '>=1.50.0',
+                       modules: ['chrono', 'filesystem', 'locale', 'regex',
+                                 'system', 'thread'])
+endif
+
 deps += dependency('zlib', fallback: ['zlib', 'zlib_dep'])
 
 wx_dep = dependency('wxWidgets', version: '>=3.0.0',
@@ -224,9 +235,6 @@ if not dep_gl.found()
 endif
 
 deps += dep_gl
-
-ssl = dependency('openssl')
-deps += ssl
 
 # TODO: csri
 
