@@ -23,6 +23,6 @@ install:
   - cmd: set BOOST_ROOT=C:\Libraries\boost_1_71_0
 
 build_script:
-  - cmd: meson --backend=ninja builddir
-  - cmd: ninja -C -Dwx_path=%WXWIN% builddir
+  - cmd: meson --backend=ninja -Dwx_path=%WXWIN% builddir
+  - cmd: ninja -C builddir
 
