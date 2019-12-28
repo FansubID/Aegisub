@@ -2,9 +2,7 @@ image: Visual Studio 2019
 
 install:
   # Set paths to dependencies (based on architecture)
-  - cmd: if %arch%==x86 (set PYTHON_ROOT=C:\python37) else (set PYTHON_ROOT=C:\python37-x64)
-  # Print out dependency paths
-  - cmd: echo Using Python at %PYTHON_ROOT%
+  - cmd: PYTHON_ROOT=C:\python37-x64
   # Add necessary paths to PATH variable
   - cmd: set PATH=%cd%;%PYTHON_ROOT%;%PYTHON_ROOT%\Scripts;%PATH%
   # Install meson and ninja
