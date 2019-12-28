@@ -1,5 +1,8 @@
 image: Visual Studio 2019
 
+environment:
+  WXWIN: '%APPVEYOR_BUILD_FOLDER\wxWidgets'
+
 install:
   # Set paths to dependencies (based on architecture)
   - cmd: set PYTHON_ROOT=C:\python37-x64
@@ -7,11 +10,18 @@ install:
   - cmd: set PATH=%cd%;%PYTHON_ROOT%;%PYTHON_ROOT%\Scripts;%PATH%
   # Install meson and ninja
   - cmd: pip install ninja meson
+  # download wxWidgets
+  - cmd: chdir %WXWIN%
+  - cmd: curl -L -o wxWidgets.7z https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.3/wxWidgets-3.1.3.7z
+  - cmd: 7z x wxWidgets.7z
+  - cmd: cd ..
+  # build wxWidgets
+  - cmd: msbuild /m  %WXWIN%\build\msw\wx_vc16.sln "/p:Configuration=DLL Release;Platform=Win32;PlatformToolset=v142" /target:adv,base,core,html,net,qa,wxexpat,wxjpeg,wxpng,wxtiff,wxzlib,xml /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   # Set up the build environment
   - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64'
   - cmd: set BOOST_ROOT=C:\Libraries\boost_1_71_0
 
 build_script:
   - cmd: meson --backend=ninja builddir
-  - cmd: ninja -C builddir
+  - cmd: ninja -C -Dwx_path=%WXWIN% builddir
 
