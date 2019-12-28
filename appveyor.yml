@@ -10,7 +10,7 @@ install:
   # Install meson and ninja
   - cmd: pip install ninja meson
   # Set up the build environment
-  - cmd: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat' %arch%
+  - cmd: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat'
 
 build_script:
   - cmd: echo Building on %arch% with %compiler%
