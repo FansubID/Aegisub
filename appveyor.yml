@@ -26,6 +26,7 @@ install:
   # Set up the build environment
   - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64'
   - cmd: set BOOST_ROOT=C:\Libraries\boost_1_71_0
+  - cmd: chdir %APPVEYOR_BUILD_FOLDER%
 
 build_script:
   - cmd: meson --backend=ninja -Dwx_path=%WXWIN% -Dicu_path=%ICUWIN% builddir
