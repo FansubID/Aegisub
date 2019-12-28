@@ -1,4 +1,4 @@
 [wrap-git]
 directory = libass
-url = https://github.com/TypesettingTools/libass.git
+url = https://github.com/odrling/libass.git
 revision = meson-no-rasterizer-approximation
