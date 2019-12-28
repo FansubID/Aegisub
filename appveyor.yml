@@ -24,12 +24,12 @@ install:
   - cmd: curl -L -o icu.zip https://github.com/unicode-org/icu/releases/download/release-65-1/icu4c-65_1-src.zip
   - cmd: 7z x icu.zip
   # build ICU
-  - cmd: msbuild /m %ICUWIN%\source\allinone\allinone.sln
+  - cmd: msbuild /m %ICUWIN%\icu\source\allinone\allinone.sln
   # Set up the build environment
   - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64'
   - cmd: set BOOST_ROOT=C:\Libraries\boost_1_71_0
 
 build_script:
-  - cmd: meson --backend=ninja -Dwx_path=%WXWIN% -Dicu_path=%ICUWIN% builddir
+  - cmd: meson --backend=ninja -Dwx_path=%WXWIN% -Dicu_path=%ICUWIN%\icu builddir
   - cmd: ninja -C builddir
 
