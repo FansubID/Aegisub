@@ -11,7 +11,6 @@ install:
   - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64'
 
 build_script:
-  - cmd: echo Building on %arch% with %compiler%
   - cmd: meson --backend=ninja builddir
   - cmd: ninja -C builddir
 
