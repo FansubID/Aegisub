@@ -1,5 +1,7 @@
 # Aegisub-Japan7
 
+[![Build status](https://ci.appveyor.com/api/projects/status/5huyx72x00ytp845/branch/master?svg=true)](https://ci.appveyor.com/project/odrling/aegisub/branch/master)
+
 ## Installation
 
 The latest Windows build can be downloaded at https://mugen.karaokes.moe/downloads/aegisub-japan7/Aegisub-Japan7-latest-x64
