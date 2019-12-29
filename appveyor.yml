@@ -17,7 +17,9 @@ install:
   - cmd: curl -L -o wxWidgets.7z https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.3/wxWidgets-3.1.3.7z
   - cmd: 7z x wxWidgets.7z
   # build wxWidgets
-  - cmd: msbuild /m %WXWIN%\build\msw\wx_vc16.sln "/p:Configuration=DLL Release;Platform=Win32;PlatformToolset=v142" /target:adv,base,core,html,net,qa,wxexpat,wxjpeg,wxpng,wxtiff,wxzlib,xml /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - cmd: chdir %WXWIN%\build\msw
+  - cmd: nmake -f makefile.vc BUILD=debug
+  - cmd: nmake -f makefile.vc BUILD=release
   # Download ICU
   - cmd: mkdir %ICUWIN%
   - cmd: chdir %ICUWIN%
