@@ -23,7 +23,10 @@ install:
   - cmd: 7z x icu.zip
   # Set up the build environment
   - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64'
-  - cmd: set BOOST_ROOT=C:\Libraries\boost_1_71_0
+  # Install boost
+  - cmd: curl -o boost-msvc-64.exe "https://bintray.com/boostorg/release/download_file?file_path=1.72.0%2Fbinaries%2Fboost_1_72_0-msvc-14.2-64.exe"
+  - cmd: cmd /c start /wait boost-msvc-64.exe /verysilent
+  - cmd: set BOOST_ROOT=C:\local\boost_1_72_0
   # build wxWidgets
   - cmd: chdir %WXWIN%\build\msw
   - cmd: nmake -f makefile.vc BUILD=release COMPILER_PREFIX=vc142_x64 SHARED=1
