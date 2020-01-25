@@ -21,12 +21,12 @@ install:
   - cmd: chdir %ICUWIN%
   - cmd: curl -L -o icu.zip https://github.com/unicode-org/icu/releases/download/release-65-1/icu4c-65_1-Win64-MSVC2017.zip
   - cmd: 7z x icu.zip
-  # Set up the build environment
-  - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64'
   # Install boost
   - cmd: curl -o boost-msvc-64.exe "https://bintray.com/boostorg/release/download_file?file_path=1.72.0%2Fbinaries%2Fboost_1_72_0-msvc-14.2-64.exe"
   - cmd: cmd /c start /wait boost-msvc-64.exe /verysilent
   - cmd: set BOOST_ROOT=C:\local\boost_1_72_0
+  # Set up the build environment
+  - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64'
   # build wxWidgets
   - cmd: chdir %WXWIN%\build\msw
   - cmd: nmake -f makefile.vc BUILD=release COMPILER_PREFIX=vc142_x64 SHARED=1
