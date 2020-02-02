@@ -24,7 +24,7 @@ install:
   # Install boost
   - cmd: chdir %APPVEYOR_BUILD_FOLDER%
   - cmd: vcpkg install boost
-  - cmd: set BOOST_ROOT=%APPVEYOR_BUILD_FOLDER%\installed\x86-windows
+  - cmd: set BOOST_ROOT=%VCPKG_ROOT%\installed\x86-windows
   # Set up the build environment
   - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64'
   # build wxWidgets
