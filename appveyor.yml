@@ -22,8 +22,9 @@ install:
   - cmd: curl -L -o icu.zip https://github.com/unicode-org/icu/releases/download/release-65-1/icu4c-65_1-Win64-MSVC2017.zip
   - cmd: 7z x icu.zip
   # Install boost
+  - cmd: chdir %APPVEYOR_BUILD_FOLDER%
   - cmd: vcpkg install boost
-  - cmd: set BOOST_ROOT=C:\local\boost_1_72_0
+  - cmd: set BOOST_ROOT=%APPVEYOR_BUILD_FOLDER%\installed\x86-windows
   # Set up the build environment
   - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64'
   # build wxWidgets
