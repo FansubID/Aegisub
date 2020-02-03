@@ -48,7 +48,7 @@ namespace CharSetDetect {
 std::string GetEncoding(agi::fs::path const& filename) {
 	auto encoding = agi::charset::Detect(filename);
 	if (!encoding.empty()) {
-		if (!encoding.compare("ASCII"))
+		if (!encoding.compare("ASCII") || !encoding.compare("UTF-8"))
 			encoding = "utf-8";
 		return encoding;
 	}
