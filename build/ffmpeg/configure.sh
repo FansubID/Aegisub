@@ -26,6 +26,7 @@ fi
   --disable-pthreads \
   --disable-shared \
   --enable-gpl \
+  --enable-dav1d \
   --enable-runtime-cpudetect \
   --enable-static \
   --enable-small \
