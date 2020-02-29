@@ -1,4 +1,5 @@
 srcdir="$1"
+export GIT_DIR="${srcdir}/.git"
 
 # If no git repo try to read from the existing git_version.h, for building from tarballs
 version_h_path="${srcdir}/git_version.h"
