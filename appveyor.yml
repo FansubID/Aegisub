@@ -27,9 +27,8 @@ install:
   # build wxWidgets
   - cmd: chdir %WXWIN%\build\msw
   - cmd: nmake -f makefile.vc BUILD=release COMPILER_PREFIX=vc142_x64 SHARED=1
-  - cmd: dir %WXWIN%\lib
-  - cmd: dir %WXWIN%\lib\vc142_x64_dll
   - cmd: chdir %APPVEYOR_BUILD_FOLDER%
+  - cmd: curl -O https://hikari.butaishoujo.moe/b/9a752830/wx-config.exe
 
 build_script:
   - cmd: meson --backend=ninja --buildtype release -Dwx_path=%WXWIN% -Dicu_path=%ICUWIN% builddir
