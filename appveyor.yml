@@ -26,7 +26,7 @@ install:
   - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64'
   # build wxWidgets
   - cmd: chdir %WXWIN%\build\msw
-  - cmd: nmake -f makefile.vc BUILD=release COMPILER_PREFIX=vc142_x64 SHARED=0
+  - cmd: nmake -f makefile.vc BUILD=release COMPILER_PREFIX=vc142_x64 SHARED=1
   - cmd: dir %WXWIN%\lib
   - cmd: dir %WXWIN%\lib\vc142_x64_dll
   - cmd: chdir %APPVEYOR_BUILD_FOLDER%
