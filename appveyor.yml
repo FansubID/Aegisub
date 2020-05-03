@@ -8,7 +8,7 @@ install:
   # Set paths to dependencies (based on architecture)
   - cmd: set PYTHON_ROOT=C:\python37-x64
   # Add necessary paths to PATH variable
-  - cmd: set PATH=%cd%;%PYTHON_ROOT%;%PYTHON_ROOT%\Scripts;%PATH%
+  - cmd: set PATH=%cd%;%PYTHON_ROOT%;%PYTHON_ROOT%\Scripts;C:\Local\bin;%PATH%
   # Install meson and ninja
   - cmd: pip install ninja meson
   # download wxWidgets
@@ -28,7 +28,8 @@ install:
   - cmd: chdir %WXWIN%\build\msw
   - cmd: nmake -f makefile.vc BUILD=release COMPILER_PREFIX=vc142_x64 SHARED=1
   - cmd: chdir %APPVEYOR_BUILD_FOLDER%
-  - cmd: curl -O https://hikari.butaishoujo.moe/b/9a752830/wx-config.exe
+  - cmd: mkdir C:\Local\bin
+  - cmd: curl -o C:\Local\bin\wx-config.exe https://hikari.butaishoujo.moe/b/9a752830/wx-config.exe
 
 build_script:
   - cmd: meson --backend=ninja --buildtype release -Dwx_path=%WXWIN% -Dicu_path=%ICUWIN% builddir
