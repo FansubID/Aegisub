@@ -13,7 +13,7 @@ ktag = "\\[kK][fo]?%d+" --pattern used to detect karaoke tags
 
 -- KM template line definition
 km_template_effect = "template pre-line all keeptags"
-km_templayte_text = '!retime("line",$start < 900 and -$start or -900,200)!{!$start < 900 and "\\\\k" .. ($start/10) or "\\\\k90"!\\fad(!$start < 900 and $start or 300!,200)}'
+km_template_text = '!retime("line",$start < 900 and -$start or -900,200)!{!$start < 900 and "\\\\k" .. ($start/10) or "\\\\k90"!\\fad(!$start < 900 and $start or 300!,200)}'
 
 function hasleadin(line)--check if there is an existing lead in (2 consecutive bracket with karaoke tags at the start of the line)
         return line.text:find("^{[^{}]-" .. ktag .. "[^{}]-}%s*{[^{}]-" .. ktag .. "[^{}]-}")
@@ -88,7 +88,7 @@ end
 function is_template_line(line)
     return (line.class == "dialogue"
         and line.effect == km_template_effect
-        and line.text == km_templayte_text)
+        and line.text == km_template_text)
 end
 
 
@@ -110,6 +110,7 @@ function mugenizer(subs)
             line.fontname = "Arial"
             line.fontsize = "24"
             line.outline = "1.5"
+            line.shadow = "0"
             line.margin_l = "15"
             line.margin_r = "15"
             line.margin_t = "20"
@@ -163,7 +164,7 @@ function mugenizer(subs)
         line.start_time = 0
         line.end_time = 0
         line.effect = km_template_effect
-        line.text = km_templayte_text
+        line.text = km_template_text
         subs.insert(first, line)
     end
 end
