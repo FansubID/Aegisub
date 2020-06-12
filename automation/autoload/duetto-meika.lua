@@ -149,9 +149,7 @@ function deduetto_meika(subs, sel)
                     bracketed = bracketed:gsub("\\f[sn][^\\}]*", "")
 
                     -- add style marker
-                    if line.style ~= script_style.name then
-                        bracketed = "{s:" .. script_style.name .. bracketed:sub(2, #bracketed)
-                    end
+                    bracketed = "{s:" .. script_style.name .. bracketed:sub(2, #bracketed)
                     line.text = line.text:sub(1, match_start-1) .. bracketed ..  line.text:sub(match_end + 1, #line.text)
                 end
             end

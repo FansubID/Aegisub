@@ -110,6 +110,7 @@ function mugenizer(subs)
             line.fontname = "Arial"
             line.fontsize = "24"
             line.outline = "1.5"
+            line.shadow = "0"
             line.margin_l = "15"
             line.margin_r = "15"
             line.margin_t = "20"
