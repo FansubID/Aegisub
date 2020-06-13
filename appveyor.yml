@@ -9,6 +9,9 @@ install:
   - cmd: set PYTHON_ROOT=C:\python37-x64
   # Add necessary paths to PATH variable
   - cmd: set PATH=%cd%;%PYTHON_ROOT%;%PYTHON_ROOT%\Scripts;%PATH%
+  # Set up the build environment
+  - cmd: set BOOST_ROOT=C:\Libraries\boost_1_73_0
+  - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64'
   # Install meson and ninja
   - cmd: pip install ninja meson
   # Download ICU
@@ -16,9 +19,6 @@ install:
   - cmd: chdir %ICUWIN%
   - cmd: curl -L -o icu.zip https://github.com/unicode-org/icu/releases/download/release-65-1/icu4c-65_1-Win64-MSVC2017.zip
   - cmd: 7z x icu.zip
-  # Set up the build environment
-  - cmd: set BOOST_ROOT=C:\Libraries\boost_1_73_0
-  - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64'
 
 build_script:
   - cmd: meson --backend=ninja --buildtype release -Dwx_path=%WXWIN% -Dicu_path=%ICUWIN% builddir
