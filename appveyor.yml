@@ -1,7 +1,6 @@
 image: Visual Studio 2019
 
 environment:
-  WXWIN: '%APPVEYOR_BUILD_FOLDER%\wxWidgets'
   ICUWIN: '%APPVEYOR_BUILD_FOLDER%\icu'
 
 install:
@@ -25,6 +24,6 @@ install:
   - cmd: chdir %APPVEYOR_BUILD_FOLDER%
 
 build_script:
-  - cmd: meson --backend=ninja --buildtype release -Dwx_path=%WXWIN% -Dicu_path=%ICUWIN% builddir
+  - cmd: meson --backend=ninja --buildtype release -Dicu_path=%ICUWIN% builddir
   - cmd: ninja -C builddir
 
