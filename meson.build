@@ -1,8 +1,10 @@
 project('Aegisub', ['c', 'cpp'],
         license: 'BSD-3-Clause',
-        meson_version: '>=0.49.0',
+        meson_version: '>=0.51.0',
         default_options: ['c_std=c11', 'cpp_std=c++11', 'b_lto=true'],
         version: '3.2.2')
+
+cmake = import('cmake')
 
 if host_machine.system() == 'windows'
     version_sh = find_program('tools/version.ps1')
@@ -11,7 +13,7 @@ else
 endif
 version_inc = include_directories('.')
 version_h = custom_target('git_version.h',
-                          command: [version_sh, meson.source_root()],
+                          command: [version_sh, meson.current_build_dir()],
                           build_by_default: true,
                           build_always_stale: true, # has internal check whether target file will be refreshed
                           output: ['git_version.h', 'git_version.xml'])
@@ -61,7 +63,8 @@ deps += dependency('libass', version: '>=0.9.7',
 
 deps += dependency('boost', version: '>=1.50.0',
                    modules: ['chrono', 'filesystem', 'locale', 'regex',
-                             'system', 'thread'])
+                             'system', 'thread'],
+                   static: get_option('default_library') == 'static')
 if host_machine.system() == 'windows'
     conf.set('BOOST_USE_WINDOWS_H', '1')
 endif
@@ -71,16 +74,46 @@ deps += dependency('zlib', fallback: ['zlib', 'zlib_dep'])
 wx_dep = dependency('wxWidgets', version: '>=3.0.0',
                     required: cxx.get_id() != 'msvc',
                     modules: ['std', 'stc', 'gl'])
-if not wx_dep.found() # this will only be hit with msvc
+
+if wx_dep.found()
+    deps += wx_dep
+else # this will only be hit with msvc
     if get_option('wx_path') != ''
         deps_inc += include_directories(get_option('wx_path') / 'include' / 'msvc', get_option('wx_path') / 'include')
         add_project_arguments('-DUNICODE', '-D_UNICODE', language: 'cpp')
         add_project_arguments('-DwxMSVC_VERSION_AUTO', '-DWXUSINGDLL', language: 'cpp')
     else
-        error('wxWidgets not found and no wx_path defined.')
+        buildShared = 'ON'
+        if get_option('default_library') == 'static'
+            buildShared = 'OFF'
+        endif
+
+        wx = cmake.subproject('wxWidgets', cmake_options: ['-DwxBUILD_INSTALL=OFF',
+                                                           '-DwxBUILD_PRECOMP=OFF', # otherwise breaks project generation w/ meson
+                                                           '-DwxBUILD_SHARED=@0@'.format(buildShared),
+                                                           '-DwxBUILD_MONOLITHIC=ON']) # otherwise breaks project generation w/ meson
+        deps += [
+            wx.dependency('mono'),
+            wx.dependency('wxzlib'),
+            wx.dependency('wxpng'),
+            wx.dependency('wxexpat'),
+            wx.dependency('wxscintilla')
+        ]
+
+        if host_machine.system() == 'windows'
+            if cc.has_header('rpc.h')
+                deps += cc.find_library('rpcrt4', required: true)
+            else
+                error('Missing Windows SDK RPC Library (rpc.h / rpcrt4.lib)')
+            endif
+            if cc.has_header('commctrl.h')
+                deps += cc.find_library('comctl32', required: true)
+            else
+                error('Missing Windows SDK Common Controls Library (commctrl.h / comctl32.lib)')
+            endif
+        endif
     endif
 endif
-deps += wx_dep
 
 icu_uc_dep = dependency('icu-uc', version: '>=4.8.1.1', required: cxx.get_id() != 'msvc')
 icu_i18n_dep = dependency('icu-i18n', version: '>=4.8.1.1', required: cxx.get_id() != 'msvc')
@@ -135,8 +168,10 @@ if host_machine.system() == 'windows' and not get_option('directsound').disabled
     if not have_dsound_h and get_option('directsound').enabled()
         error('DirectSound enabled but dsound.h not found')
     endif
-    if dsound_dep.found() and winmm_dep.found() and ole32_dep.found() and have_dsound_h
-        deps += [dsound_dep, winmm_dep, ole32_dep]
+
+    dxguid_dep = cc.find_library('dxguid', required: true)
+    if dsound_dep.found() and winmm_dep.found() and ole32_dep.found() and dxguid_dep.found() and have_dsound_h
+        deps += [dsound_dep, winmm_dep, ole32_dep, dxguid_dep]
         conf.set('WITH_DIRECTSOUND', '1')
         dep_avail += 'DirectSound'
     endif
