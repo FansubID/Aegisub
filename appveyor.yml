@@ -13,6 +13,7 @@ install:
   - cmd: set BOOST_ROOT=C:\Libraries\boost_1_73_0
   - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64'
   # Install meson and ninja
+  - cmp: pip install --upgrade pip wheel
   - cmd: pip install ninja meson
   # Download ICU
   - cmd: mkdir %ICUWIN%
