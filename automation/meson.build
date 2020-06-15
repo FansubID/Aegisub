@@ -16,6 +16,16 @@ install_data(
     'autoload/ua.ScriptCleanup.lua',
     'autoload/unkf.lua',
     'autoload/discord-rpc.lua',
+    'autoload/yudha.KBBI.lua',
+    'autoload/yudha.Leksikon.lua',
+    'autoload/yudha.Persfective.lua',
+    'autoload/yudha.SCXvid.lua',
+    'autoload/yudha.SilihOtomatis.lua',
+    'autoload/yudha.UnnecessaryChapter.lua',
+    'autoload/romanizer.lua',
+    'autoload/mediainfo.lua',
+    'autoload/fixkarakeyframe.lua',
+    'autoload/enc-hsub-VS.lua',
     install_dir: automation_dir / 'autoload')
 
 install_data(
@@ -26,7 +36,9 @@ install_data(
 
 install_data(
     'include/cleantags.lua',
+    'include/enc_gui.lua',
     'include/clipboard.lua',
+    'include/ffi-mediaInfo.lua',
     'include/karaskel-auto4.lua',
     'include/karaskel.lua',
     'include/lfs.lua',
