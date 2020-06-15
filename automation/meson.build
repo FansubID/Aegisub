@@ -47,6 +47,7 @@ install_data(
     'include/unicode.lua',
     'include/utils-auto4.lua',
     'include/utils.lua',
+    'include/discordRPC.lua',
     install_dir: automation_dir / 'include')
 
 install_data(
