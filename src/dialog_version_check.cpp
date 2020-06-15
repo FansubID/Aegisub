@@ -159,7 +159,7 @@ VersionCheckerResultDialog::VersionCheckerResultDialog(wxString const& main_text
 	main_sizer->Add(new wxStaticLine(this), 0, wxEXPAND|wxALL, 6);
 
 	if (IsNewer(update)) {
-		text = new wxStaticText(this, -1, to_wx("Aegisub-Japan7"));
+		text = new wxStaticText(this, -1, to_wx("Aegisub"));
 		wxFont boldfont = text->GetFont();
 		boldfont.SetWeight(wxFONTWEIGHT_BOLD);
 		text->SetFont(boldfont);
@@ -169,7 +169,7 @@ VersionCheckerResultDialog::VersionCheckerResultDialog(wxString const& main_text
 		main_sizer->Add(descbox, 0, wxEXPAND|wxBOTTOM, 6);
 
 		std::ostringstream surl;
-		surl << "https://" << UPDATE_CHECKER_SERVER << UPDATE_CHECKER_BASE_URL << "/Aegisub-Japan7-" << AegisubVersion(update) << "-x64.exe";
+		surl << "https://" << UPDATE_CHECKER_SERVER << UPDATE_CHECKER_BASE_URL << "/Aegisub" << AegisubVersion(update) << "-x64.exe";
 		std::string url = surl.str();
 
 		main_sizer->Add(new wxHyperlinkCtrl(this, -1, to_wx(url), to_wx(url)), 0, wxALIGN_LEFT|wxBOTTOM, 6);
@@ -364,7 +364,7 @@ AegisubUpdateDescription GetLatestVersion() {
 	std::string target = s.str();
 	http::request<http::string_body> req(http::verb::get, target, 11);
 	req.set(http::field::host, UPDATE_CHECKER_SERVER);
-	req.set(http::field::user_agent, "Aegisub-Japan7");
+	req.set(http::field::user_agent, "Aegisub");
 
 	http::write(stream, req);
 
