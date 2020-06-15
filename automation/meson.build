@@ -15,6 +15,7 @@ install_data(
     'autoload/ua.HYDRA.lua',
     'autoload/ua.ScriptCleanup.lua',
     'autoload/unkf.lua',
+    'autoload/discord-rpc.lua',
     install_dir: automation_dir / 'autoload')
 
 install_data(
