@@ -18,7 +18,7 @@ install_data(
     'autoload/discord-rpc.lua',
     'autoload/yudha.KBBI.lua',
     'autoload/yudha.Leksikon.lua',
-    'autoload/yudha.Persfective.lua',
+    'autoload/yudha.Perspective.lua',
     'autoload/yudha.SCXvid.lua',
     'autoload/yudha.SilihOtomatis.lua',
     'autoload/yudha.UnnecessaryChapter.lua',
