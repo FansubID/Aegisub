@@ -204,6 +204,7 @@
         {},
         { "command" : "help/website" },
         { "command" : "help/joysound_exporter" },
+        { "command" : "help/perpusindo" },
         { "command" : "help/bugs" },
         {},
         { "command" : "help/irc" },
