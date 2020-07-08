@@ -26,6 +26,12 @@ install_data(
     'autoload/mediainfo.lua',
     'autoload/fixkarakeyframe.lua',
     'autoload/enc-hsub-VS.lua',
+    'autoload/drm.max.ReplaceStuffMax.moon',
+    'autoload/max.Curcol.lua',
+    'autoload/max.DiaKomen.lua',
+    'autoload/max.EditorTampan.lua',
+    'autoload/max.Halipsis.lua',
+    'autoload/max.NoKomen.lua',
     install_dir: automation_dir / 'autoload')
 
 install_data(
