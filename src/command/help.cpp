@@ -123,7 +123,7 @@ struct help_joysound_export final : public Command {
 	}
 };
 
-struct perpusindo final : public Command {
+struct help_perpusindo final : public Command {
     CMD_NAME("help/perpusindo")
     CMD_ICON(perpus_indo)
     STR_MENU("&PerpusIndo")
