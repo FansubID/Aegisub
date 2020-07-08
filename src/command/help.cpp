@@ -123,6 +123,18 @@ struct help_joysound_export final : public Command {
 	}
 };
 
+struct perpusindo final : public Command {
+    CMD_NAME("help/perpusindo")
+    CMD_ICON(perpus_indo)
+    STR_MENU("&PerpusIndo")
+    STR_DISP("PerpusIndo")
+    STR_HELP("Listing Indonesia Fansub Releases")
+
+    void operator()(agi::Context *) override {
+        wxLaunchDefaultBrowser("https://www.perpusindo.info/", wxBROWSER_NEW_WINDOW);
+    }
+ };
+
 }
 
 
@@ -134,5 +146,6 @@ namespace cmd {
 		reg(agi::make_unique<help_video>());
 		reg(agi::make_unique<help_website>());
 		reg(agi::make_unique<help_joysound_export>());
+		reg(agi::make_unique<help_perpusindo>());
 	}
 }

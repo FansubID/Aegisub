@@ -3081,6 +3081,18 @@ msgstr ""
 msgid "Export karaoke from Joysound"
 msgstr ""
 
+#: ../src/command/help.cpp
+msgid "&PerpusIndo"
+msgstr ""
+
+#: ../src/command/help.cpp
+msgid "PerpusIndo"
+msgstr ""
+
+#: ../src/command/help.cpp
+msgid "Listing Indonesia Fansub Releases"
+msgstr ""
+
 #: ../src/command/help.cpp:119
 msgid "Visit Aegisub's official website"
 msgstr ""
